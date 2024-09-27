@@ -26,6 +26,11 @@
 #define milklowml 70
 #define choclowml 30
 
+int coffeebeansg = 50;
+int waterml = 250;
+int milkml = 500;
+int chocsyrup = 150;
+
 int main(){
 
   int menu;
