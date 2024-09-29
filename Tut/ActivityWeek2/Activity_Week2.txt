@@ -1,0 +1,3 @@
+Q1: Fix and complete the attached program alu.c to allow a user to select and execute basic arithmetic operations on two integer values. Your code should adhere to the RECOMMENDED multi-function program structure in C.
+
+Q2: Run the attached scope.c program and explain how the output data and address values align with the concept of variable scope in C.
