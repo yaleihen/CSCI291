@@ -1,0 +1,62 @@
+Appendix
+int printf(const char *format, <variables>)
+
+int scanf(const char *format, ...)
+• format : the C string that contains embedded
+tags on the type and format of data to read.
+• format: the string that contains the text to be
+written. It can optionally contain embedded • On success, the function returns the number of
+format tags that are replaced by the values of
+items matching the format which were
+<variables>
+successfully read.
+• If successful, the total number of characters
+written is returned. On failure, a negative
+number is returned.
+switch (expression ){
+if ( expression ) {
+case value1 :
+statement-list1
+statement-list1
+} // end if
+case value2 :
+else {
+statement-list2
+statement-list1
+….
+} //
+default:
+default_statements
+}
+while( loop repetition condition )
+for ( initialization; repetition condition; update )
+{
+{
+statements;
+/* loop body */
+statements;
+/* loop body */
+}
+}
+do
+{
+
+statement_list;
+
+}
+while (loop repetition condition);
+
+&&: Logical AND
+|| : logical OR
+! : logical NOT
+
+Headers:
+# include <stdio.h>
+# include <math.h>
+# include <stdbool.h> to use a boolean type, i.e. bool.
+Square root:
+You can use the built-int function sqrt (a) to get the square root value of the variable a
+Ternary operator (?:) syntax
+Condition? Expr1 : Expr2
+
+
