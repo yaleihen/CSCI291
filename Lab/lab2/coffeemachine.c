@@ -42,20 +42,39 @@ int cappuTotal;
 int mochaCount;
 int mochaTotal;
 
+int menuSelect();
+int orderCoffee();
+int adminMode();
+
+int menu;
+
 int main(){
 
-  int menu;
-
   while (1){
-  printf("Coffee Maker Interface\n 1. Order coffee\n 2. ADMIN MODE (for operators)\n 0. Exit\n");
-  scanf("%d", &menu);
-  if (menu==0){
-	  break;
+  menuSelect();
   }
+  }
+
+int menuSelect(){
+	 printf("Coffee Maker Interface\n 1. Order coffee\n 2. ADMIN MODE (for operators)\n 0. Exit\n");
+  scanf("%d", &menu);
   // Switch statement
   switch (menu){
 	  case 1:
-	int coffeeChoice;
+			orderCoffee();
+			break;
+	  case 2:
+	  		adminMode();
+	  		break;
+	  case 0:
+	  		return 0;
+	  default:
+	  printf("\nInvalid option. Make sure to input the corresponding number of your desired choice.\n\n");
+  }
+}
+
+int orderCoffee(){
+int coffeeChoice;
 	while(1){
 	printf("Pick your coffee cup of choice!\n 1. Espresso\n 2. Cappuccino\n 3. Mocha\n 9. Confirm order and buy\n 0. Exit this menu\n");
 	scanf("%d", &coffeeChoice);
@@ -94,16 +113,21 @@ int main(){
 			printf("\n\nYou have paid your order!\n\n");
 			sleep(3);
 			if(payAED > priceAED){
-				printf("Printing your change (%.2f) ...", payAED - priceAED);
+				printf("Printing your change (%.2f) ...\n", payAED - priceAED);
 				sleep(2);
 			}
-			break;
-	  }
-	}
-		break;
-	case 2:
-		printf("Admin mode menu.\n");
-		break;
-  }
-}
-}
+		}
+		}
+		return 0;
+		}
+
+		int adminMode(){
+		printf("Input the Admin Password: ");
+		int pass;
+		scanf("%d", &pass);
+		if (pass == adminPasswd)
+		printf("\nWelcome to the Admin Menu\n\n");
+		else
+		printf("\nIncorrect Password\n\n");
+		return 0;
+		}
