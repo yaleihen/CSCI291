@@ -31,7 +31,9 @@ int coffeeBeansg = 50;
 int watermL = 250;
 int milkmL = 500;
 int chocSyrup = 150;
-float priceAED = 0.0;
+float priceAED = 0.00;
+float payAED = 0.00;
+float inputAED = 0.00;
 
 int espressCount;
 int espressTotal;
@@ -55,7 +57,7 @@ int main(){
 	  case 1:
 	int coffeeChoice;
 	while(1){
-	printf("Pick your coffee cup of choice!\n 1. Espresso\n 2. Cappuccino\n 3. Mocha\n 0. Exit this menu\n");
+	printf("Pick your coffee cup of choice!\n 1. Espresso\n 2. Cappuccino\n 3. Mocha\n 9. Confirm order and buy\n 0. Exit this menu\n");
 	scanf("%d", &coffeeChoice);
 	if (coffeeChoice==0){
 		break;
@@ -66,21 +68,35 @@ int main(){
 			scanf("%d", &espressCount);
 			espressTotal += espressCount;
 			priceAED += (espressCount * espressPriceAED);
-			printf("\nYour order costs $%.1f\n\n", priceAED);
+			printf("\nYour order costs $%.2f\n\n", priceAED);
 			break;
 		case 2:
 			printf("How many Cappuccinos would you like to order? ");
 			scanf("%d", &cappuCount);
 			cappuTotal += cappuCount;
 			priceAED += (cappuCount * cappuPriceAED);
-			printf("\nYour order costs $%.1f\n\n", priceAED);
+			printf("\nYour order costs $%.2f\n\n", priceAED);
 			break;
 		case 3:
 			printf("How many Mochas would you like to order? ");
 			scanf("%d", &mochaCount);
 			mochaTotal += mochaCount;
 			priceAED += (mochaCount * mochaPriceAED);
-			printf("\nYour order costs $%.1f\n\n", priceAED);
+			printf("\nYour order costs $%.2f\n\n", priceAED);
+			break;
+		case 9:
+			printf("Insert $%.2f in paper/coins: ", priceAED);
+			while (payAED < priceAED){
+				scanf(" %f", &inputAED);
+				payAED += inputAED;
+				printf("\nYou have inserted $%.2f\n$%.2f left: ", payAED, priceAED - payAED);
+			}
+			printf("\n\nYou have paid your order!\n\n");
+			sleep(3);
+			if(payAED > priceAED){
+				printf("Printing your change (%.2f) ...", payAED - priceAED);
+				sleep(2);
+			}
 			break;
 	  }
 	}
