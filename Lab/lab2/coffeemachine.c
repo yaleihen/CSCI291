@@ -42,24 +42,24 @@ int cappuTotal;
 int mochaCount;
 int mochaTotal;
 
-int menuSelect();
+int menu();
 int orderCoffee();
 int adminMode();
 
-int menu;
+int menuSelect;
 
 int main(){
 
   while (1){
-  menuSelect();
+  menu();
   }
   }
 
-int menuSelect(){
+int menu(){
 	 printf("Coffee Maker Interface\n 1. Order coffee\n 2. ADMIN MODE (for operators)\n 0. Exit\n");
-  scanf("%d", &menu);
+  scanf("%d", &menuSelect);
   // Switch statement
-  switch (menu){
+  switch (menuSelect){
 	  case 1:
 			orderCoffee();
 			break;
@@ -78,9 +78,6 @@ int coffeeChoice;
 	while(1){
 	printf("Pick your coffee cup of choice!\n 1. Espresso\n 2. Cappuccino\n 3. Mocha\n 9. Confirm order and buy\n 0. Exit this menu\n");
 	scanf("%d", &coffeeChoice);
-	if (coffeeChoice==0){
-		break;
-	}
 	  switch (coffeeChoice){
 		case 1:
 			printf("How many Espressos would you like to order? ");
@@ -116,6 +113,8 @@ int coffeeChoice;
 				printf("Printing your change (%.2f) ...\n", payAED - priceAED);
 				sleep(2);
 			}
+		case 0:
+			return 0;
 		}
 		}
 		return 0;
