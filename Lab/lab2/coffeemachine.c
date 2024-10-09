@@ -37,23 +37,23 @@ float payAED = 0.00;
 float inputAED = 0.00;
 float salesAED = 0.00;
 
-int espressCount;
 int espressTotal;
-int cappuCount;
+int espressCount;
 int cappuTotal;
-int mochaCount;
+int cappuCount;
 int mochaTotal;
+int mochaCount;
 
-int menu();
 int orderCoffee();
 int adminMode();
+int orderedCoffee();
 
 int menuSelect;
 
 int main(){
 
   while (1){
-	  printf("Coffee Maker Interface\n\n 1. Order coffee\n 2. ADMIN MODE (for operators)\n 0. Exit\n\n");
+	  printf("\nCoffee Maker Interface\n\n 1. Order coffee\n 2. ADMIN MODE (for operators)\n 0. Exit\n\n");
   scanf("%d", &menuSelect);
   // Switch statement
   switch (menuSelect){
@@ -73,7 +73,7 @@ int main(){
 int orderCoffee(){
 int coffeeChoice;
 	while(1){
-	printf("Pick your coffee cup of choice!\n");
+	printf("\nPick your coffee cup of choice!\n\n");
 	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL)
 		printf("1. Espresso\n");
 	else
@@ -83,23 +83,26 @@ int coffeeChoice;
 	else
 		printf("2. Cappuccino (unavailable, contact on-site operator)\n");
 	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL && milkmL >= milkLowmL && chocSyrup >= chocLowmL)
-		printf("3. Mocha\n");
+		printf("3. Mocha\n\n");
 	else
 		printf("3. Mocha (unavailable, contact on-site operator)\n");
 	printf("9. Confirm order and buy\n");
-	printf("0. Exit this menu\n");
+	printf("0. Exit this menu\n\n");
 	scanf("%d", &coffeeChoice);
 	  switch (coffeeChoice){
 		case 1:
 			if (coffeeBeansg >= 8 && watermL >= espressWatermL){
-				printf("How many Espressos would you like to order? ");
-				scanf("%d", &espressCount);
-				espressTotal += espressCount;
-				coffeeBeansg -= (espressCount * beansg);
-				watermL -= (espressCount * espressWatermL);
-				priceAED += (espressCount * espressPriceAED);
+				printf("\nAdding an Espresso to your order...\n");
+				espressCount += 1;
+				espressTotal += 1;
+				coffeeBeansg -= beansg;
+				watermL -= espressWatermL;
+				priceAED += espressPriceAED;
 				salesAED += priceAED;
-				printf("\nYour order costs $%.2f\n\n", priceAED);
+				sleep(2);
+				orderedCoffee();
+				printf("\nYour order costs $%.2f\n", priceAED);
+				sleep(2);
 			}
 			else{
 				printf("\nOption unavailable due to limited ingredients\n\n");
@@ -107,15 +110,18 @@ int coffeeChoice;
 			break;
 		case 2:
 			if (coffeeBeansg >= 8 && watermL >= cappuWatermL && milkmL >= cappuMilkmL){
-				printf("How many Cappuccinos would you like to order? ");
-				scanf("%d", &cappuCount);
-				cappuTotal += cappuCount;
-				coffeeBeansg -= (cappuCount * beansg);
-				watermL -= (cappuCount * cappuWatermL);
-				milkmL -= (cappuCount * cappuMilkmL);
-				priceAED += (cappuCount * cappuPriceAED);
+				printf("\nAdding a Cappuccino to your order...\n");
+				cappuCount += 1;
+				cappuTotal += 1;
+				coffeeBeansg -= beansg;
+				watermL -= cappuWatermL;
+				milkmL -= cappuMilkmL;
+				priceAED += cappuPriceAED;
 				salesAED += priceAED;
-				printf("\nYour order costs $%.2f\n\n", priceAED);
+				sleep(2);
+				orderedCoffee();
+				printf("\nYour order costs $%.2f\n", priceAED);
+				sleep(2);
 				}
 			else{
 				printf("\nOption unavailable due to limited ingredients\n\n");
@@ -123,16 +129,19 @@ int coffeeChoice;
 			break;
 		case 3:
 			if (coffeeBeansg >= 8 && watermL >= mochaWatermL && milkmL >= mochaMilkmL && chocSyrup >= mochaChocmL){
-				printf("How many Mochas would you like to order? ");
-				scanf("%d", &mochaCount);
-				mochaTotal += mochaCount;
-				coffeeBeansg -= (mochaCount * beansg);
-				watermL -= (mochaCount * mochaWatermL);
-				milkmL -= (mochaCount * mochaMilkmL);
-				chocSyrup -= (mochaCount * mochaChocmL);
-				priceAED += (mochaCount * mochaPriceAED);
+				printf("\nAdding a Mocha to your order...\n");
+				mochaCount += 1;
+				mochaTotal += 1;
+				coffeeBeansg -= beansg;
+				watermL -= mochaWatermL;
+				milkmL -= mochaMilkmL;
+				chocSyrup -= mochaChocmL;
+				priceAED += mochaPriceAED;
 				salesAED += priceAED;
-				printf("\nYour order costs $%.2f\n\n", priceAED);
+				sleep(2);
+				orderedCoffee();
+				printf("\nYour order costs $%.2f\n", priceAED);
+				sleep(2);
 				}
 			else{
 				printf("\nOption unavailable due to limited ingredients\n\n");
@@ -145,8 +154,12 @@ int coffeeChoice;
 				payAED += inputAED;
 				printf("\nYou have inserted $%.2f\n$%.2f left: ", payAED, priceAED - payAED);
 			}
-			printf("\n\nYou have paid your order!\n\n");
-			sleep(3);
+			priceAED = 0;
+			espressCount = 0;
+			cappuCount = 0;
+			mochaCount = 0;
+			printf("\n\nYou have paid your order!\n");
+			sleep(2);
 			if(payAED > priceAED){
 				printf("Printing your change (%.2f) ...\n", payAED - priceAED);
 				sleep(2);
@@ -281,3 +294,16 @@ int coffeeChoice;
 		else
 		printf("\nIncorrect Password\n\n");
 	}
+int orderedCoffee(){
+	printf("\nYou have ordered:-\n\n");
+	if (espressCount > 0){
+		printf("%d Espresso(s)", espressCount);
+	}
+	if (cappuCount > 0){
+		printf("%d Cappuccino(s)", cappuCount);
+	}
+	if (mochaCount > 0){
+		printf("%d Mocha(s)", mochaCount);
+	}
+	return 0;
+}
