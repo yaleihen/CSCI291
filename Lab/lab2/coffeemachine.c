@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #define adminPasswd 27341
 
@@ -34,6 +35,7 @@ int chocSyrup = 150;
 float priceAED = 0.00;
 float payAED = 0.00;
 float inputAED = 0.00;
+float salesAED = 0.00;
 
 int espressCount;
 int espressTotal;
@@ -72,15 +74,15 @@ int orderCoffee(){
 int coffeeChoice;
 	while(1){
 	printf("Pick your coffee cup of choice!\n");
-	if (coffeeBeansg >= 8 && watermL >= espressWatermL)
+	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL)
 		printf("1. Espresso\n");
 	else
 		printf("1. Espresso (unavailable)\n");
-	if (coffeeBeansg >= 8 && watermL >= cappuWatermL && milkmL >= cappuMilkmL)
+	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL && milkmL >= milkLowmL)
 		printf("2. Cappuccino\n");
 	else
 		printf("2. Cappuccino (unavailable)\n");
-	if (coffeeBeansg >= 8 && watermL >= mochaWatermL && milkmL >= mochaMilkmL && chocSyrup >= mochaChocmL)
+	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL && milkmL >= milkLowmL && chocSyrup >= chocLowmL)
 		printf("3. Mocha\n");
 	else
 		printf("3. Mocha (unavailable)\n");
@@ -96,7 +98,9 @@ int coffeeChoice;
 				coffeeBeansg -= (espressCount * beansg);
 				watermL -= (espressCount * espressWatermL);
 				priceAED += (espressCount * espressPriceAED);
-				printf("\nYour order costs $%.2f\n\n", priceAED);}
+				salesAED += priceAED;
+				printf("\nYour order costs $%.2f\n\n", priceAED);
+			}
 			else{
 				printf("\nOption unavailable due to limited ingredients\n\n");
 			}
@@ -110,6 +114,7 @@ int coffeeChoice;
 				watermL -= (cappuCount * cappuWatermL);
 				milkmL -= (cappuCount * cappuMilkmL);
 				priceAED += (cappuCount * cappuPriceAED);
+				salesAED += priceAED;
 				printf("\nYour order costs $%.2f\n\n", priceAED);
 				}
 			else{
@@ -126,7 +131,7 @@ int coffeeChoice;
 				milkmL -= (mochaCount * mochaMilkmL);
 				chocSyrup -= (mochaCount * mochaChocmL);
 				priceAED += (mochaCount * mochaPriceAED);
-				printf("\nYIngredients are now %d %d %d %d", coffeeBeansg ,watermL, milkmL, chocSyrup);
+				salesAED += priceAED;
 				printf("\nYour order costs $%.2f\n\n", priceAED);
 				}
 			else{
@@ -157,9 +162,54 @@ int coffeeChoice;
 		printf("Input the Admin Password: ");
 		int pass;
 		scanf("%d", &pass);
-		if (pass == adminPasswd)
+		if (pass == adminPasswd){
+		int adminMenuSelect;
 		printf("\nWelcome to the Admin Menu\n\n");
+		while(1){
+		printf("1. Display ingredient quantities and total sales\n");
+		printf("2. Replenish ingredients\n");
+		printf("3. Change coffee price\n");
+		printf("0. Exit Admin Mode\n");
+		scanf("%d", &adminMenuSelect);
+		switch(adminMenuSelect){
+			case 1:
+				printf("Quantities of coffee ingredients:-\n");
+				printf("Coffee Beans (g)\t%d\n", coffeeBeansg);
+				printf("Water (mL)\t\t%d\n", watermL);
+				printf("Milk (mL)\t\t%d\n", milkmL);
+				printf("Choc. Syrup (mL)\t%d\n", chocSyrup);
+				printf("\nTotal Coffee Sales: %.2f AED\n\n", salesAED);
+				break;
+			case 2:
+				while(1){
+					int replenishChoice;
+					printf("\n1. Replenish Beans\n");
+					printf("2. Replenish Water\n");
+					printf("3. Replenish Milk\n");
+					printf("4. Replenish Choc. Syrup\n");
+					printf("0. Exit this menu\n");
+					scanf(" %d", &replenishChoice);
+					switch(replenishChoice){
+						case 1:
+							while(coffeeBeansg < 150 && coffeeBeansg > 200){
+								coffeeBeansg = rand() % 200 + 1;
+							}
+							break;
+						case 0:
+							return 0;
+						default:
+							printf("\nInvalid option. Make sure to input the corresponding number of your desired choice.\n\n");
+					}
+				}
+				break;
+			case 0:
+				return 0;
+				break;
+			default: 
+				printf("\nInvalid option. Make sure to input the corresponding number of your desired choice.\n\n");
+		}
+		}
+		}
 		else
 		printf("\nIncorrect Password\n\n");
-		return 0;
-		}
+	}
