@@ -1,10 +1,5 @@
 #include<stdio.h>
 
-#define coffeebeangrams 8
-#define watermocha 30
-#define water 39
-#define adminpasswd "27341"
-
 int main() {
   int i;
 
