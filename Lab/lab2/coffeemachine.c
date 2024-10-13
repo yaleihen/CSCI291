@@ -82,38 +82,46 @@ void displaySalesIngredients();
 
 ///*** Main Function ***///
 int main(){
-	int menuSelect; // Allows user to input their menu of choice
-	srand(time(NULL)); // Uses the devices internal clock to control the random generation of numbers (see line #)
+	int menuSelect; // allows user to input their menu of choice
+	srand(time(NULL)); // uses the devices internal clock to control the random generation of numbers (see line #)
 	
-	/* Menus embedded within infinite while loop */
+	/* menus embedded within infinite while loop */
 	
 	while (1){
 	  printf("\nCoffee Maker Interface\n\n\t1. Order coffee\n\t2. ADMIN MODE (for operators)\n\t0. Exit\n\n");
 	  printf("Input the number corresponding to your desired menu: ");
-	  scanf("%d", &menuSelect);
-
-	  switch (menuSelect){
+	  scanf("%d", &menuSelect); // allows user to input menu choice,
+	  switch (menuSelect){ // and passes input to switch case statement
           	case 1:
-			orderCoffee();
+			orderCoffee(); // ordering coffee menu
 			break;
           	case 2:
-			adminMode();
+			adminMode(); // admin mode menu (for operators!)
 			break;
           	case 0:
-			return 0;
+			return 0; // returns 0 to the infinite while loop, halting it from repeating
 			break;
 		default:
-			printf("\nINVALID OPTION.\n\n");
+			printf("\nINVALID OPTION\n\n"); // any other input returns "INVALUD OPTION"
 			break;
   }
   }
   }
+
+// Function to display the menu to order and buy coffee
 
 int orderCoffee(){
 int coffeeChoice;
 	printf("\nCoffee Ordering Menu\n\n");
 	sleep(1);
-	while(1){
+	while(1){ // menu embedded within infinite while loop
+	
+	/* The following if else statements check the current quantity
+	 * of the coffee ingredients required for each type of coffee. 
+	 * If they are below past the "Low Threshold Amount", it prints
+	 * a message next to the coffee type stating that it is unavailable
+	 * and that an on-site machine operator must be contacted. */
+
 	if (coffeeBeansg >= beansLowg && watermL >= waterLowmL)
 		printf("\t1. Espresso ($%.2f)\n", espressPriceAED);
 	else
@@ -129,10 +137,10 @@ int coffeeChoice;
 	printf("\n\t9. Confirm/cancel order\n");
 	printf("\t0. Exit this menu\n\n");
 	printf("Pick your coffee type of choice: ");
-	scanf("%d", &coffeeChoice);
-	switch (coffeeChoice){
+	scanf("%d", &coffeeChoice); // prompts customer for their desired coffee,
+	switch (coffeeChoice){ // passes custoemr input to switch case statement.
 		case 1:
-			orderCoffeeEspresso();
+			orderCoffeeEspresso(); 
 			break;
 		case 2:
 			orderCoffeeCappuccino();
@@ -144,6 +152,7 @@ int coffeeChoice;
 			buyOrderedCoffee();
 			break;
 		case 0:
+			// customer's current order must be confirmed/cancelled before leaving this menu
 			if (priceAED > 0){
 				printf("\nConfirm/cancel your current order to leave this menu.\n\n");
 				break;
@@ -153,20 +162,28 @@ int coffeeChoice;
 			break;
 			}
 		default:
-			printf("\nINVALID OPTION\n\n");
+			printf("\nINVALID OPTION\n\n"); // for inputs not corresponding to any option
 			break;
 		}
 		}
 		return 0;
 		}
 
+/* Function for printing the Admin Menu and its
+ * functionality for operators with the password */
+
 int adminMode(){
-		printf("Input the Admin Password: ");
-		int pass;
-		scanf("%d", &pass);
-		if (pass == adminPasswd){
-		int adminMenuSelect;
-		while(1){
+
+	/* The following lines prompt the operator for the password,
+	 * which is an integer. If the password is correct, the operator
+	 * receives access to the Admin Menu. Otherwise, no access. */
+
+	printf("Input the Admin Password: ");
+	int pass;
+	scanf("%d", &pass);
+	if (pass == adminPasswd){
+	int adminMenuSelect;
+	while(1){ // menu embedded within infinite while loop
 		printf("\nADMIN MENU\n\n");
 		printf("\t1. Display ingredient quantities and total sales\n");
 		printf("\t2. Replenish ingredients\n");
@@ -196,7 +213,7 @@ int adminMode(){
 				break;
 		}
 		}
-		}
+	}
 		else
 		printf("\nIncorrect Password\n\n");
 	}
@@ -209,9 +226,9 @@ int orderCoffeeEspresso(){
 		coffeeBeansg -= beansg;
 		watermL -= espressWatermL;
 		priceAED += espressPriceAED;
-		sleep(2);
+		sleep(1);
 		orderedCoffee();
-		sleep(2);
+		sleep(1);
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
@@ -227,9 +244,9 @@ int orderCoffeeCappuccino(){
 		watermL -= cappuWatermL;
 		milkmL -= cappuMilkmL;
 		priceAED += cappuPriceAED;
-		sleep(2);
+		sleep(1);
 		orderedCoffee();
-		sleep(2);
+		sleep(1);
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
@@ -246,9 +263,9 @@ int orderCoffeeMocha(){
 		milkmL -= mochaMilkmL;
 		chocSyrup -= mochaChocmL;
 		priceAED += mochaPriceAED;
-		sleep(2);
+		sleep(1);
 		orderedCoffee();
-		sleep(2);
+		sleep(1);
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
@@ -257,45 +274,29 @@ int orderCoffeeMocha(){
 
 int buyOrderedCoffee(){
 	if (priceAED > 0){
-	orderedCoffee();
-	printf("Confirm your order? (y/n) ");
-	scanf(" %c", &yslashno);
-	if (yslashno == 'y'){
-		while (payAED < priceAED){
-			float remainingAED = priceAED - payAED;
-			printf("\nInsert $%.2f in notes/coins: ", remainingAED);
-			scanf(" %f", &inputAED);
-			if (inputAED == 10 || inputAED == 5 || inputAED == 1 || inputAED == 0.5 || inputAED == 0.25){
-				payAED += inputAED;
-				if (remainingAED > 0){
-				printf("\nYou have inserted $%.2f\n", payAED, remainingAED);
-			}
-				else{
-				printf("\nYou have inserted $%.2f", payAED);
-				}
-			}
-			else{
-			printf("Invalid note/coin\n");
-			}
-		}
+		orderedCoffee();
+		printf("Confirm your order? (y/n) ");
+		scanf(" %c", &yslashno);
+		if (yslashno == 'y'){
+			insertMoney();
 			printf("\nYou have paid your order!\n");
 			sleep(2);
 			if(payAED > priceAED){
-				float changeAED = payAED - priceAED;
-				printf("Printing your change ($%.2f)...\n", changeAED);
-				sleep(2);
+					float changeAED = payAED - priceAED;
+					printf("Printing your change ($%.2f)...\n", changeAED);
+					sleep(2);
 			}
 			salesAED += priceAED;
 			resetOrderSession();
-			}
-	else{
+		}
+		else{
 			printf("\nYour order has been cancelled.\n\n");
 			coffeeBeansg += ((espressCount + cappuCount + mochaCount) * beansg);
 			watermL += ((espressCount * espressWatermL) + (cappuCount * cappuWatermL) + (mochaCount * mochaWatermL));
 			milkmL += ((cappuCount * cappuMilkmL) + (mochaCount * mochaMilkmL));
 			chocSyrup += (mochaCount * mochaChocmL);
 			resetOrderSession();
-	}
+		}
 	}
 	else{
 	printf("\nYou have not ordered anything.\n");
@@ -432,6 +433,34 @@ void orderedCoffee(){
 	printf("\nYour order costs $%.2f\n\n", priceAED);
 }
 
+void insertMoney(){
+	while (payAED < priceAED){
+		float remainingAED = priceAED - payAED;
+		printf("\nInsert $%.2f in notes/coins: ", remainingAED);
+		scanf(" %f", &inputAED);
+		if (inputAED == 10 || inputAED == 5 || inputAED == 1 || inputAED == 0.5 || inputAED == 0.25){
+			payAED += inputAED;
+			if (remainingAED > 0){
+				printf("\nYou have inserted $%.2f\n", payAED, remainingAED);
+			}
+			else{
+				printf("\nYou have inserted $%.2f", payAED);
+			}
+		}
+		else{
+		printf("Invalid note/coin\n");
+		}
+	}
+		printf("\nYou have paid your order!\n");
+		sleep(2);
+		if(payAED > priceAED){
+			float changeAED = payAED - priceAED;
+			printf("Printing your change ($%.2f)...\n", changeAED);
+			sleep(2);
+		}
+		salesAED += priceAED;
+		resetOrderSession();
+}
 void resetOrderSession(){
 	priceAED = 0;
 	payAED = 0;
