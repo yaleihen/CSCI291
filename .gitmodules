@@ -1,0 +1,3 @@
+[submodule "CSCI291-maze-robot"]
+	path = CSCI291-maze-robot
+	url = https://github.com/yaleihen/CSCI291-maze-robot.git
