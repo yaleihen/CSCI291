@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+/* End of Headers */
+
 ///*** Constants ***///
 
 // Admin Password
@@ -34,6 +36,8 @@ float mochaPriceAED = 5.5;
 #define milkLowmL 70
 #define chocLowmL 30
 
+/* End of Constants */
+
 ///*** Variables ***///
 
 // Quantities of Coffee Ingredients
@@ -49,15 +53,14 @@ float inputAED = 0.00;
 float salesAED = 0.00;
 
 // Initializing integers for counting how much Coffee of a certain type is ordered
-int espressTotal;
 int espressCount;
-int cappuTotal;
 int cappuCount;
-int mochaTotal;
 int mochaCount;
 
 // Initializing a char acting as input for y/n prompts
 char yslashno;
+
+/* End of Variables */
 
 ///*** Function Prototypes ***///
 
@@ -72,6 +75,7 @@ int orderCoffeeMocha();
 void orderedCoffee();
 int buyOrderedCoffee();
 void resetOrderSession();
+void insertMoney();
 
 // Admin Menu Functions
 int replenishIngredients();
@@ -83,11 +87,9 @@ void displaySalesIngredients();
 ///*** Main Function ***///
 int main(){
 	int menuSelect; // allows user to input their menu of choice
-	srand(time(NULL)); // uses the devices internal clock to control the random generation of numbers (see line #)
-	
-	/* menus embedded within infinite while loop */
-	
-	while (1){
+	srand(time(NULL)); // uses the devices internal clock to control the random generation of numbers
+
+	while (1){ // menus embedded within infinite while loop
 	  printf("\nCoffee Maker Interface\n\n\t1. Order coffee\n\t2. ADMIN MODE (for operators)\n\t0. Exit\n\n");
 	  printf("Input the number corresponding to your desired menu: ");
 	  scanf("%d", &menuSelect); // allows user to input menu choice,
@@ -101,16 +103,14 @@ int main(){
           	case 0:
 			return 0; // returns 0 to the infinite while loop, halting it from repeating
 			break;
-		default:
-			printf("\nINVALID OPTION\n\n"); // any other input returns "INVALUD OPTION"
+		default: // any other input returns "INVALUD OPTION"
+			printf("\nINVALID OPTION\n\n");
 			break;
   }
   }
   }
 
-// Function to display the menu to order and buy coffee
-
-int orderCoffee(){
+int orderCoffee(){ // display the menu to order and buy coffee
 int coffeeChoice;
 	printf("\nCoffee Ordering Menu\n\n");
 	sleep(1);
@@ -138,9 +138,12 @@ int coffeeChoice;
 	printf("\t0. Exit this menu\n\n");
 	printf("Pick your coffee type of choice: ");
 	scanf("%d", &coffeeChoice); // prompts customer for their desired coffee,
-	switch (coffeeChoice){ // passes custoemr input to switch case statement.
+	switch (coffeeChoice){ // passes customer input to switch case statement.
+	
+	/* inputs 1-3 execute functions that order coffee while 9 confirms or cancels the final order */
+		
 		case 1:
-			orderCoffeeEspresso(); 
+			orderCoffeeEspresso();
 			break;
 		case 2:
 			orderCoffeeCappuccino();
@@ -151,8 +154,7 @@ int coffeeChoice;
 		case 9:
 			buyOrderedCoffee();
 			break;
-		case 0:
-			// customer's current order must be confirmed/cancelled before leaving this menu
+		case 0: // customer's current order must be confirmed/cancelled before leaving this menu
 			if (priceAED > 0){
 				printf("\nConfirm/cancel your current order to leave this menu.\n\n");
 				break;
@@ -194,6 +196,8 @@ int adminMode(){
 		scanf("%d", &adminMenuSelect);
 		switch(adminMenuSelect){
 			case 1:
+
+			/* inputs 1-4 execute various admin mode functions */
 				displaySalesIngredients();
 				break;
 			case 2:
@@ -218,11 +222,13 @@ int adminMode(){
 		printf("\nIncorrect Password\n\n");
 	}
 
+/* The three following functions add a coffee cup to
+ * the order and deplete the ingredients accordingly */
+
 int orderCoffeeEspresso(){
 	if (coffeeBeansg >= 8 && watermL >= espressWatermL){
 		printf("\nAdding an Espresso to your order...\n");
 		espressCount += 1;
-		espressTotal += 1;
 		coffeeBeansg -= beansg;
 		watermL -= espressWatermL;
 		priceAED += espressPriceAED;
@@ -239,7 +245,6 @@ int orderCoffeeCappuccino(){
 	if (coffeeBeansg >= 8 && watermL >= cappuWatermL && milkmL >= cappuMilkmL){
 		printf("\nAdding a Cappuccino to your order...\n");
 		cappuCount += 1;
-		cappuTotal += 1;
 		coffeeBeansg -= beansg;
 		watermL -= cappuWatermL;
 		milkmL -= cappuMilkmL;
@@ -257,7 +262,6 @@ int orderCoffeeMocha(){
 	if (coffeeBeansg >= 8 && watermL >= mochaWatermL && milkmL >= mochaMilkmL && chocSyrup >= mochaChocmL){
 		printf("\nAdding a Mocha to your order...\n");
 		mochaCount += 1;
-		mochaTotal += 1;
 		coffeeBeansg -= beansg;
 		watermL -= mochaWatermL;
 		milkmL -= mochaMilkmL;
@@ -272,6 +276,9 @@ int orderCoffeeMocha(){
 	}
 }
 
+/* end of coffee type functions */
+
+// allows customer to buy coffee after confirming their order
 int buyOrderedCoffee(){
 	if (priceAED > 0){
 		orderedCoffee();
@@ -289,7 +296,7 @@ int buyOrderedCoffee(){
 			salesAED += priceAED;
 			resetOrderSession();
 		}
-		else{
+		else{ // if order is cancelled, ingredients are restored to their previous values
 			printf("\nYour order has been cancelled.\n\n");
 			coffeeBeansg += ((espressCount + cappuCount + mochaCount) * beansg);
 			watermL += ((espressCount * espressWatermL) + (cappuCount * cappuWatermL) + (mochaCount * mochaWatermL));
@@ -303,7 +310,7 @@ int buyOrderedCoffee(){
 	}
 }
 
-void displaySalesIngredients(){
+void displaySalesIngredients(){ // displaying sales and ingredient quantity
 	printf("\nQuantities of coffee ingredients:-\n");
 	printf("Coffee Beans (g)\t%d\n", coffeeBeansg);
 	printf("Water (mL)\t\t%d\n", watermL);
@@ -311,6 +318,13 @@ void displaySalesIngredients(){
 	printf("Choc. Syrup (mL)\t%d\n", chocSyrup);
 	printf("\nTotal Coffee Sales: %.2f AED\n\n", salesAED);
 }
+
+/* allows operator to replenish ingredients with the use of rand().
+ * by default, rand() generates a constant set of random numbers,
+ * meaning the number generation is psuedo-random rather than
+ * completely random. in line 90, the devices internal clock is
+ * used to constantly generate new sets of numbers, effectively
+ * implementing a RNG (random number generator) */
 
 int replenishIngredients(){
 	int replenishChoice;
@@ -361,7 +375,7 @@ int replenishIngredients(){
 	}
 }
 
-int changeCoffeePrice(){
+int changeCoffeePrice(){ // allows the operator to change the price of each coffee type.
 	int changePriceSelect;
 	float newPrice;
 	while(1){
@@ -419,7 +433,7 @@ int changeCoffeePrice(){
 	}
 }
 
-void orderedCoffee(){
+void orderedCoffee(){ // displays the customers order while ordering and before confirming
 	printf("\nYou have ordered:-\n\n");
 	if (espressCount > 0){
 		printf("\t%d Espresso(s)\n", espressCount);
@@ -433,6 +447,9 @@ void orderedCoffee(){
 	printf("\nYour order costs $%.2f\n\n", priceAED);
 }
 
+/* allows customer to:-
+ * insert 10 or 5 AED notes 
+ * 1, 0.5 or 0.25 AED coins */
 void insertMoney(){
 	while (payAED < priceAED){
 		float remainingAED = priceAED - payAED;
@@ -451,6 +468,7 @@ void insertMoney(){
 		printf("Invalid note/coin\n");
 		}
 	}
+	// in case more than enough money has been inserted, change is printed
 		printf("\nYou have paid your order!\n");
 		sleep(2);
 		if(payAED > priceAED){
@@ -461,6 +479,10 @@ void insertMoney(){
 		salesAED += priceAED;
 		resetOrderSession();
 }
+
+/* resets all the temporary order variables, such as ones
+ * concerning money and the cup count of ordered coffee */
+
 void resetOrderSession(){
 	priceAED = 0;
 	payAED = 0;
@@ -469,6 +491,7 @@ void resetOrderSession(){
 	mochaCount = 0;
 }
 
+// allows operator to collect money and resets sale counter to 0
 void resetSales(){
 	salesAED = 0;
 	printf("Sale amount has been reset to 0\n");
