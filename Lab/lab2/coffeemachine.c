@@ -286,7 +286,7 @@ int buyOrderedCoffee(){
 		scanf(" %c", &yslashno);
 		if (yslashno == 'y'){
 			insertMoney();
-			printf("\nYou have paid your order!\n");
+			printf("\nYou have paid your order!\n\n");
 			sleep(2);
 			if(payAED > priceAED){
 					float changeAED = payAED - priceAED;
@@ -469,7 +469,6 @@ void insertMoney(){
 		}
 	}
 	// in case more than enough money has been inserted, change is printed
-		printf("\nYou have paid your order!\n");
 		sleep(2);
 		if(payAED > priceAED){
 			float changeAED = payAED - priceAED;
