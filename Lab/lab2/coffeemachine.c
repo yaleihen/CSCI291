@@ -58,7 +58,7 @@ int cappuCount;
 int mochaCount;
 
 // Initializing a char acting as input for y/n prompts
-char yslashno;
+char yesno;
 
 /* End of Variables */
 
@@ -82,7 +82,14 @@ int replenishIngredients();
 int changeCoffeePrice();
 void resetSales();
 void displaySalesIngredients();
+void negativePriceWarn();
 
+/* End of Prototypes */
+
+/* "sleep(x)" is used throughout the program after most
+ * "printf" statements to make the coffee machine stop
+ * executing code for x seconds, making it "sleep". 
+ * output becomes more readable this way. */
 
 ///*** Main Function ***///
 int main(){
@@ -91,20 +98,21 @@ int main(){
 
 	while (1){ // menus embedded within infinite while loop
 	  printf("\nCoffee Maker Interface\n\n\t1. Order coffee\n\t2. ADMIN MODE (for operators)\n\t0. Exit\n\n");
-	  printf("Input the number corresponding to your desired menu: ");
+	  printf("Input the number corresponding to your choice: ");
 	  scanf("%d", &menuSelect); // allows user to input menu choice,
 	  switch (menuSelect){ // and passes input to switch case statement
           	case 1:
 			orderCoffee(); // ordering coffee menu
 			break;
           	case 2:
-			adminMode(); // admin mode menu (for operators!)
+			adminMode(); // admin mode menu (for operators)
 			break;
           	case 0:
 			return 0; // returns 0 to the infinite while loop, halting it from repeating
 			break;
-		default: // any other input returns "INVALUD OPTION"
+		default: // any other input returns "INVALID OPTION"
 			printf("\nINVALID OPTION\n\n");
+			sleep(1);
 			break;
   }
   }
@@ -140,7 +148,8 @@ int coffeeChoice;
 	scanf("%d", &coffeeChoice); // prompts customer for their desired coffee,
 	switch (coffeeChoice){ // passes customer input to switch case statement.
 	
-	/* inputs 1-3 execute functions that order coffee while 9 confirms or cancels the final order */
+	/* inputs 1-3 execute functions that order coffee 
+	 * while 9 confirms or cancels the final order */
 		
 		case 1:
 			orderCoffeeEspresso();
@@ -164,7 +173,9 @@ int coffeeChoice;
 			break;
 			}
 		default:
+			// for inputs not corresponding to any option
 			printf("\nINVALID OPTION\n\n"); // for inputs not corresponding to any option
+			sleep(1);
 			break;
 		}
 		}
@@ -192,7 +203,7 @@ int adminMode(){
 		printf("\t3. Change coffee price\n");
 		printf("\t4. Reset sale counter and collect the money\n");
 		printf("\t0. Exit Admin Mode\n\n");
-	  	printf("Input the number corresponding to your desired menu: ");
+	  	printf("Input the number corresponding to your choice: ");
 		scanf("%d", &adminMenuSelect);
 		switch(adminMenuSelect){
 			case 1:
@@ -214,6 +225,7 @@ int adminMode(){
 				break;
 			default: 
 				printf("\nINVALID OPTION\n\n");
+				sleep(1);
 				break;
 		}
 		}
@@ -238,6 +250,7 @@ int orderCoffeeEspresso(){
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
+		sleep(1);
 	}
 }
 
@@ -255,6 +268,7 @@ int orderCoffeeCappuccino(){
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
+		sleep(1);
 	}
 }
 
@@ -273,6 +287,7 @@ int orderCoffeeMocha(){
 		}
 	else{
 		printf("\nOption unavailable due to limited ingredients\n\n");
+		sleep(1);
 	}
 }
 
@@ -283,26 +298,31 @@ int buyOrderedCoffee(){
 	if (priceAED > 0){
 		orderedCoffee();
 		printf("Confirm your order? (y/n) ");
-		scanf(" %c", &yslashno);
-		if (yslashno == 'y'){
+		scanf(" %c", &yesno);
+		if (yesno == 'y'){
 			insertMoney();
 			printf("\nYou have paid your order!\n\n");
 			sleep(2);
 			if(payAED > priceAED){
-					float changeAED = payAED - priceAED;
-					printf("Printing your change ($%.2f)...\n", changeAED);
-					sleep(2);
+				float changeAED = payAED - priceAED;
+				printf("Printing your change ($%.2f)...\n", changeAED);
+				sleep(2);
 			}
 			salesAED += priceAED;
 			resetOrderSession();
 		}
-		else{ // if order is cancelled, ingredients are restored to their previous values
+		else if (yesno == 'n'){ 
+		// if order is cancelled, ingredients are restored to their previous values
 			printf("\nYour order has been cancelled.\n\n");
 			coffeeBeansg += ((espressCount + cappuCount + mochaCount) * beansg);
 			watermL += ((espressCount * espressWatermL) + (cappuCount * cappuWatermL) + (mochaCount * mochaWatermL));
 			milkmL += ((cappuCount * cappuMilkmL) + (mochaCount * mochaMilkmL));
 			chocSyrup += (mochaCount * mochaChocmL);
 			resetOrderSession();
+		}
+		else{
+			printf("\nINVALID CHOICE\n\n");
+			sleep(1);
 		}
 	}
 	else{
@@ -317,6 +337,7 @@ void displaySalesIngredients(){ // displaying sales and ingredient quantity
 	printf("Milk (mL)\t\t%d\n", milkmL);
 	printf("Choc. Syrup (mL)\t%d\n", chocSyrup);
 	printf("\nTotal Coffee Sales: %.2f AED\n\n", salesAED);
+	sleep(2);
 }
 
 /* allows operator to replenish ingredients with the use of rand().
@@ -334,42 +355,61 @@ int replenishIngredients(){
 	printf("\t3. Replenish Milk\n");
 	printf("\t4. Replenish Choc. Syrup\n");
 	printf("\t5. Replenish all quantities\n");
+	printf("\t7. (FOR TESTING) Deplete all quantities\n");
 	printf("\t0. Exit this menu\n\n");
 	printf("Input the number corresponding to the ingredient you need to replenish: ");
 	scanf("%d", &replenishChoice);
 	switch(replenishChoice){
 		case 1:
 			coffeeBeansg += (rand() % (200 - 150 + 1)) + 150;
-			sleep(2);
+			sleep(1);
 			printf("\nUpdated quantity of coffee beans to %d (g)\n", coffeeBeansg);
+			sleep(2);
 			break;
 		case 2: 
-			watermL += (rand() % (350 - 300 + 1)) + 300;
-			sleep(2);
+			watermL += (rand() % (1200 - 1150 + 1)) + 1150;
+			sleep(1);
 			printf("\nUpdated quantity of water to %d (mL)\n", watermL);
+			sleep(2);
 			break;
 		case 3:
-			milkmL += (rand() % (575 - 525 + 1)) + 525;
-			sleep(2);
+			milkmL += (rand() % (1650 - 1550 + 1)) + 1550;
+			sleep(1);
 			printf("\nUpdated quantity of milk to %d (mL)\n", milkmL);
+			sleep(2);
 			break;
 		case 4:
-			chocSyrup += (rand() % (250 - 200)) + 200;
-			sleep(2);
+			chocSyrup += (rand() % (350 - 300)) + 300;
+			sleep(1);
 			printf("\nUpdated quantity of chocolate syrup to %d (mL)\n", chocSyrup);
+			sleep(2);
 			break;
 		case 5:
 			coffeeBeansg += (rand() % (200 - 150 + 1)) + 150;
-			watermL += (rand() % (350 - 300 + 1)) + 300;
-			milkmL += (rand() % (575 - 525 + 1)) + 525;
-			chocSyrup += (rand() % (250 - 200)) + 200;
+			watermL += (rand() % (1200 - 1150 + 1)) + 1150;
+			milkmL += (rand() % (1650 - 1550 + 1)) + 1550;
+			chocSyrup += (rand() % (350 - 300)) + 300;
+			sleep(2);
+			printf("\nUpdated quantity of coffee beans to %d (g)\n", coffeeBeansg);
+			printf("Updated quantity of water to %d (mL)\n", watermL);
+			printf("Updated quantity of milk to %d (mL)\n", milkmL);
+			printf("Updated quantity of chocolate syrup to %d (mL)\n", chocSyrup);
 			sleep(4);
-			printf("\nUpdated all quantities\n");
+			break;
+		case 7:
+			coffeeBeansg = 0;
+			watermL = 0;
+			milkmL = 0;
+			chocSyrup = 0;
+			sleep(1);
+			printf("\nAll ingredients depleted\n");
+			sleep(2);
 			break;
 		case 0:
 			return 0;
 		default:
 			printf("\nINVALID OPTION\n\n");
+			sleep(1);
 			break;
 	}
 	}
@@ -395,8 +435,7 @@ int changeCoffeePrice(){ // allows the operator to change the price of each coff
 				printf("\nThe new price for one (1) cup of Espresso is %.2f\n", newPrice);
 			}
 			else {
-				printf("\nINVALID PRICE\n");
-				printf("\nMake sure it is a positive value\n");
+				negativePriceWarn();
 			}
 			break;
 		case 2:
@@ -407,8 +446,7 @@ int changeCoffeePrice(){ // allows the operator to change the price of each coff
 				printf("\nThe new price for one (1) cup of Cappuccino is %.2f\n", newPrice);
 			}
 			else {
-				printf("\nINVALID PRICE\n");
-				printf("\nMake sure it is a positive value\n");
+				negativePriceWarn();
 			}
 			break;
 		case 3:
@@ -419,8 +457,7 @@ int changeCoffeePrice(){ // allows the operator to change the price of each coff
 				printf("\nThe new price for one (1) cup of Mocha is %.2f\n", newPrice);
 			}
 			else {
-				printf("\nINVALID PRICE\n");
-				printf("\nMake sure it is a positive value\n");
+				negativePriceWarn();
 			}
 			break;
 		case 0:
@@ -428,6 +465,7 @@ int changeCoffeePrice(){ // allows the operator to change the price of each coff
 			break;
 		default:
 			printf("\nINVALID OPTION\n\n");
+			sleep(1);
 			break;
 	}
 	}
@@ -447,15 +485,15 @@ void orderedCoffee(){ // displays the customers order while ordering and before 
 	printf("\nYour order costs $%.2f\n\n", priceAED);
 }
 
-/* allows customer to:-
- * insert 10 or 5 AED notes 
- * 1, 0.5 or 0.25 AED coins */
+/* allows customer to insert:-
+ * (20, 10, 5) AED notes 
+ * (1, 0.5, 0.25) AED coins */
 void insertMoney(){
 	while (payAED < priceAED){
 		float remainingAED = priceAED - payAED;
 		printf("\nInsert $%.2f in notes/coins: ", remainingAED);
 		scanf(" %f", &inputAED);
-		if (inputAED == 10 || inputAED == 5 || inputAED == 1 || inputAED == 0.5 || inputAED == 0.25){
+		if (inputAED == 20 | inputAED == 10 || inputAED == 5 || inputAED == 1 || inputAED == 0.5 || inputAED == 0.25){
 			payAED += inputAED;
 			if (remainingAED > 0){
 				printf("\nYou have inserted $%.2f\n", payAED, remainingAED);
@@ -480,7 +518,7 @@ void insertMoney(){
 }
 
 /* resets all the temporary order variables, such as ones
- * concerning money and the cup count of ordered coffee */
+ * involving money and the cup count of ordered coffee */
 
 void resetOrderSession(){
 	priceAED = 0;
@@ -491,9 +529,19 @@ void resetOrderSession(){
 }
 
 // allows operator to collect money and resets sale counter to 0
+
 void resetSales(){
 	salesAED = 0;
-	printf("Sale amount has been reset to 0\n");
+	printf("Sale variable has been reset\n");
 	sleep(1);
-	printf("Collect money from the machine\n");
+	printf("Dispensing money...\n");
+	sleep(2);
+}
+
+// message when negative price is inputted while changing cup price
+
+void negativePriceWarn(){
+	printf("\nINVALID PRICE\n");
+	printf("\nMake sure it is a positive value\n");
+	sleep(1);
 }
