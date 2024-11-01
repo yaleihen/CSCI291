@@ -3,18 +3,22 @@
 #define SIZE 24
 #define nRows 8
 #define nCols 3
-// PROTOTYPES
+
+//** Function Prototypes **//
 void print_array(int array[], int length);
 void print_matrix(int mat[][nCols], int rows);
 
+//** Main Function **//
 
 int main()
 {
 int arr[SIZE];
 int arr2d[nRows][nCols];
-print_matrix(arr2d,nRows);
-//Call to different functions
+print_array(arr[5], 4);
+// print_matrix(arr2d,nRows);
 }
+
+//** Defining Functions **//
 
 void print_array(int array[], int length){
    for(int i=0;i<length; i++)
@@ -29,4 +33,4 @@ void print_matrix(int mat[][nCols], int rows){
    }     
 }
 
-//FUNCTION DEFINITIONS
+// wdw
