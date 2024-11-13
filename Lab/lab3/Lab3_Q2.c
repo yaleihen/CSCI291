@@ -1,47 +1,50 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main(void){
-
-    // initialize Balance variable and Transaction Arrays
-    
+int main(void) {
+    // Initialize balance variable and transaction arrays
     int balance = 1000;
     int transactions[11] = {200, -150, -500, -400, -50, -200, 300, -400, 500, 500, 500};
     int toBeProcessed[11];
     int skipped = 0;
-    
-    // for loop sequentially reads transactions array
+    int breakIndex = -1; // Tracks where the balance reached zero
 
-    for (int i = 0; i < 11; i++){
-        
-        /* breaks loop if upcoming transaction
-         * sets balance to 0, skips it too */
+    // For loop to sequentially read transactions array
+    for (int i = 0; i < 11; i++) {
+        // Skip transaction if it would set the balance below 0
+        if (balance + transactions[i] < 0) {
+            toBeProcessed[skipped++] = transactions[i];
+            sleep(1);
+            continue;
+        }
 
-        if (balance + transactions[i] == 0){
+        // If transaction sets balance to exactly 0, add to skipped, update balance, and break
+        if (balance + transactions[i] == 0) {
             printf("Balance is 0\n");
             printf("Skipping subsequent transactions...\n");
-            toBeProcessed[skipped] = transactions[i];
+            toBeProcessed[skipped++] = transactions[i];
+            balance += transactions[i];
+            breakIndex = i; // Store the index where balance reaches zero
             sleep(1);
-            skipped++;
             break;
         }
 
-        // skip transaction if it sets balance below 0
-
-        if (balance + transactions[i] < 0){
-            // printf("Invalid Transaction\n"); // debug
-            toBeProcessed[skipped] = transactions[i];
-            skipped++;
-            sleep(1);
-            continue;
-            }
+        // Apply valid transaction to balance
         balance += transactions[i];
-        // printf("Balance = %d\n", balance); // debug
     }
+
+    // Process transactions after the one that caused balance to reach zero
+    for (int j = breakIndex + 1; j < 11; j++) {
+        toBeProcessed[skipped++] = transactions[j];
+    }
+
+    // Output the final balance and all skipped transactions
     printf("Final Balance = %d\n", balance);
     sleep(1);
-    printf("Invalid Transactions:-\n");
-    for(int i = 0; i < skipped; i++){
-        printf("[%d]: %d\n", i+1, toBeProcessed[i]);
+    printf("Skipped Transactions:\n");
+    for (int i = 0; i < skipped; i++) {
+        printf("[%d]: %d\n", i + 1, toBeProcessed[i]);
     }
+
+    return 0;
 }
