@@ -1,9 +1,8 @@
-#include <stdio.h> 
+#include<stdio.h> 
 #include <stdbool.h> 
 #define SIZE 24
 #define nRows 8
 #define nCols 3
-
 // PROTOTYPES
 void print_array(int array[], int length);
 void print_matrix(int mat[][nCols], int rows);
@@ -14,9 +13,7 @@ int main()
 int arr[SIZE];
 int arr2d[nRows][nCols];
 print_matrix(arr2d,nRows);
-
-// Call to different functions
-
+//Call to different functions
 }
 
 void print_array(int array[], int length){

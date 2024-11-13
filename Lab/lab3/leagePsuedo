@@ -1,0 +1,58 @@
+// search and update player details
+
+void search_update() {
+// temp char array for player search
+char playerTemp
+
+// bool "found" based on player found or not
+Set "found" to false
+
+Prompt "Enter the name of the player"
+Read playerTemp
+// cycles through all clubs
+	For i=0 to clubCount do
+		// cycles through players of each club
+		For j=0 to clubs[i].activeSize step 1 do
+			If clubs[i].Players.playerName is equal to playerTemp do
+				Set "found" to true
+				Print "Player found in club <clubs[i].name>"
+			
+				Prompt "Enter new kit number"
+				Read clubs[i].clubPlayers[j].kitNumber
+			
+				Prompt "Enter new club position"
+				Read clubs[i].clubPlayers[j].position
+
+				Print "Player details updated successfully"
+				return;
+			endIf
+		endFor
+	endFor
+
+	If "found" is false do
+		Print "Player not found"
+}
+
+	
+	If maximum clubs enrolled {
+		Print "Cannot enroll more clubs"
+		End
+	}
+	
+	else {
+		Print "Enter the name of the FC"
+		Read <new club name>
+	}
+	
+	// detect duplicate names
+	For i=0 to <enrolled clubs amount> do
+		If clubs[i].name == newClub.name then do {
+			Print "This club has already been enrolled"
+			End
+		}
+	
+	// if not duplicate, add to clubs array
+	Copy newClub.name to clubs[i]
+	Set clubs[i] player size to 0
+	Print "Club has been enrolled successfully"
+}
