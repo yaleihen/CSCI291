@@ -219,18 +219,24 @@ void display_club_statistics() {
     for (int i = 0; i < clubCount; i++) {
         printf("\nClub: %s\n", clubs[i].clubName);
         printf("Total Players: %d\n", clubs[i].activeSize);
-
+        int age[clubs[i].activeSize];
+        int ageSum = 0;
         for (int j = 0; j < clubs[i].activeSize; j++) {
             player_t player = clubs[i].clubPlayers[j];
             printf("Player %d:\n", j + 1);
             printf("  Name: %s\n", player.playerName);
             printf("  Kit Number: %d\n", player.kitNumber);
             printf("  Position: %s\n", player.playerPosition);
+            age[j] = 2024 - player.playerAge.playerBYear;
+            ageSum += age[j];
             printf("  Birth Date: %02d-%02d-%04d\n",
                    player.playerAge.playerBDay,
                    player.playerAge.playerBMonth,
                    player.playerAge.playerBYear);
+            
         }
+        int ageAvg = ageSum/(clubs[i].activeSize);
+        printf("Average Age of Players: %d\n", ageAvg);
     }
 }
 
@@ -252,6 +258,10 @@ void search_update() {
                 found = true;
                 printf("\nPlayer found in club '%s'\n", clubs[i].clubName);
 
+                printf("Enter updated birth date (day month year): ");
+                scanf("%d %d %d", &clubs[i].clubPlayers[j].playerAge.playerBDay, 
+                      &clubs[i].clubPlayers[j].playerAge.playerBMonth, 
+                      &clubs[i].clubPlayers[j].playerAge.playerBYear);
                 printf("Enter new kit number: ");
                 scanf("%d", &clubs[i].clubPlayers[j].kitNumber);
                 clear_input_buffer();
