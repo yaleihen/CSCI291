@@ -45,7 +45,7 @@ int main()
     int status;
     while( (status=fread(data,sizeof(float), BLKSIZE,bfp))==BLKSIZE)
        {
-         //  printf("\n%d", status); DEBUGGING ONLY
+         printf("\n%d", status); // DEBUGGING ONLY
 	sum=0.0;
            
         for(int i=0; i<BLKSIZE;i++)
