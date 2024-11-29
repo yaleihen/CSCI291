@@ -31,10 +31,10 @@ int main(){
     do {
 
         if (fscanfStatus == 1)
-            fprintf(outFile, "%.1f\n", nextValue);
+            fprintf(outFile, "%.1f ", nextValue);
         
         else {
-            fseek(inFile, 1, SEEK_CUR);
+            fseek(inFile, 1, SEEK_CUR); // SEEK_CUR to start from current pos.
             printf("Invalid float\n");
         }
         
